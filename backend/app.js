@@ -73,6 +73,7 @@ io.on('connection', function(socket) {
 
   // user typing event
   socket.on('user typing', (isTyping) => {
+    console.log('User is typing');
     if (isTyping === true) {
       socket.broadcast.emit('user typing', {
         nickname: socket.username,
