@@ -47,6 +47,19 @@ $("#msg").keypress((e) => {
 /*
   Socket events
 */
+socket.on('notify user', (user) => {
+  $('#messages').append($('<li class="event">').text(`You have joined as ${user}`));
+});
+
+socket.on('user connected', (user) => {
+  $('#messages').append($('<li class="event">').text(`${user} has joined.`));
+});
+socket.on('user disconnected', (user) => {
+  $('#messages').append($('<li class="event">').text(`${user} has left.`));
+});
+
+
+
 socket.on('chat message', (msg) => {
   var msg = `[${msg.time}] - [${msg.nickname}]: ${msg.message}`;
 
@@ -55,17 +68,7 @@ socket.on('chat message', (msg) => {
   $('#messages').append($('<li>').text(msg));
 });
 
-socket.on('notify user', (user) => {
-  $('#messages').append($('<li class="event">').text(`You have joined as ${user}`));
-});
 
-socket.on('user connected', (user) => {
-  $('#messages').append($('<li class="event">').text(`${user} has joined.`));
-});
-
-socket.on('user disconnected', (user) => {
-  $('#messages').append($('<li class="event">').text(`${user} has left.`));
-});
 
 socket.on('user typing', (msg) => {
   var i = _users.indexOf(msg.nickname);

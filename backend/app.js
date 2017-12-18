@@ -22,6 +22,8 @@ const io = socketIo(server);
 
 const nameGen = Moniker.generator([Moniker.adjective, Moniker.noun]);
 
+var _users = new Map();
+
 // User
 let getUser = (id) => {
   let nickname = _users.get(id);
@@ -50,10 +52,11 @@ let getUser = (id) => {
 // connection event
 io.on('connection', function(socket) {  
   console.log("A user is connected");
+
   socket.username = getUser(socket.id);
   
-  socket.emit('notify user', socket.username);
-  socket.broadcast.emit('user connected', socket.username);
+  socket.emit('notify_user', socket.username);
+  socket.broadcast.emit('user_connected', socket.username);
 
   // disconnect event
   socket.on('disconnect', () => {
@@ -61,10 +64,10 @@ io.on('connection', function(socket) {
   });
 
   // chat message event
-  socket.on('chat message', (params) => {
+  socket.on('chat_message', (params) => {
     let timestamp = (new Date()).toISOString();
 
-    io.emit('chat message', {
+    io.emit('chat_message', {
       nickname: socket.username,
       message: params.message,
       time: timestamp
@@ -72,15 +75,15 @@ io.on('connection', function(socket) {
   });
 
   // user typing event
-  socket.on('user typing', (isTyping) => {
+  socket.on('user_typing', (isTyping) => {
     console.log('User is typing');
     if (isTyping === true) {
-      socket.broadcast.emit('user typing', {
+      socket.broadcast.emit('user_typing', {
         nickname: socket.username,
         isTyping: true
       });
     } else {
-      socket.broadcast.emit('user typing', {
+      socket.broadcast.emit('user_typing', {
         nickname: socket.username,
         isTyping: false
       });

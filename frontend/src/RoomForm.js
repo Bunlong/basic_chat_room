@@ -2,26 +2,24 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 let RoomForm = props => {
-  const { handleSubmit, handleChange } = props;
-
+  const { data, handleSubmit, handleChange } = props;
+  
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <div>
+      <ul> 
+        {data.map(i => <li key={i}>{i}</li> )}        
+      </ul>
+      <form onSubmit={handleSubmit}>
         <Field 
           name="text" 
           component="input" 
-          type="text" 
-          onChange={(e) => {handleChange}} 
-          onKeyPress={event => {
-                if (event.key === 'Enter') {
-                  alert("Hello");
-                }
-              }}
+          type="text"
+          onKeyPress={handleChange} 
+          value="Hello"
         />
-      </div>
-
-      <button type="submit">Submit</button>
-    </form>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   )
 }
 
