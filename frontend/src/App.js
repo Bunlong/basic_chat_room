@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import RoomForm from './RoomForm';
 import io from "socket.io-client";
-let socket = io(`http://localhost:8000`)
+let socket = io(`http://192.168.88.246:8000`)
 
 class App extends Component {
   state = {
@@ -10,7 +10,7 @@ class App extends Component {
     typing:   false,
     timeout:  undefined,
     users:    [],
-    test: ""
+    typingStatus: ""
   }
 
   resetTyping = () => {
@@ -66,15 +66,19 @@ class App extends Component {
       switch(this.state.users.length) {
         case 0:
           console.log('');
+          this.setState({typingStatus: ''});
           break;
         case 1:
           console.log(`${this.state.users[0]} is typing...`);
+          this.setState({typingStatus: `${this.state.users[0]} is typing...`});
           break;
         case 2:
           console.log(`${this.state.users[0]} and ${this.state.users[1]} are typing...`);
+          this.setState({typingStatus: `${this.state.users[0]} and ${this.state.users[1]} are typing...`});
           break;
         default:
           console.log('Multiple users are typing...');
+          this.setState({typingStatus: 'Multiple users are typing...'});
           break;
       }
     });
@@ -95,6 +99,7 @@ class App extends Component {
     return (
       <div>
         <RoomForm data={this.state.data} onSubmit={this.submit} handleChange={this.change} />
+        {this.state.typingStatus}
       </div>
     );
   }
